@@ -1,14 +1,13 @@
 ---
 name: skill-acceptance
-description: "【Skill 验收流水线】一句话验收一个 skill：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.1.0
+description: "【Skill 验收流水线】一句话验收一个 skill：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。支持单 skill 与库级批量验收。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
+version: 1.2.0
 author: 彬少
 platforms: [macos]
 metadata:
   hermes:
-    tags: [skill, 验收, quality, 编排]
+    tags: [skill, 验收, quality, 编排, 批量]
     category: skill-maintenance
-    triggers: [验收skill, 验收, skill验收, 全面检查, 综合检查, 检查并模拟]
 ---
 
 # Skill 验收流水线
@@ -104,6 +103,17 @@ metadata:
 5. 验收报告更新终态（已修/使用者选择不修/误报剔除）
 
 ---
+
+## 批量验收模式（2026-09-06 全量验收 126 个实战沉淀）
+
+单 skill 验收 = 本 skill 主流程；库里几十上百个要全量验收时，升级为批量模式：
+
+1. **主题聚批**：同主题的 skill 放同一批（如 desktop 插件系 7 个、会话诊断系 6 个）——同批验便于发现主题内矛盾（本轮抓到「两条 skill 对键盘弹出给相反口径」）。
+2. **排序策略**：按「使用频次 × 体量」降序——高频大文件风险敞口最大，先验。
+3. **并发执行**：delegate_task 主题批次并发，子代理只验收不修复（修复由主会话统一执行，保证口径一致）。遇 429 是上游过载波形：冷却 4 分钟后重发，收缩并发；同批全灭 = 冷失败特征。
+4. **交叉矛盾终审**：两个子代理报告结论相反时（本轮对 `--before` 机制一成一误），主会话必须亲自读源码终审，不投票不折中。
+5. **台账收口**：每个 skill 一条台账（status/issues/fixed/note），全量完成后统计一次通过率与修复率。
+6. **耗时预算**：单 skill 全流程耗时与体量正相关（41.7KB 走全流程约 20 分钟；5KB 级 2-3 分钟）——批量前按体量估算总时长，避免误判「跑不动」。
 
 ## 报告落盘
 
