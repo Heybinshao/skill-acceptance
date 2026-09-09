@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.1.0-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.3.2-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
