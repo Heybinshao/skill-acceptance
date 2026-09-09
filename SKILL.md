@@ -1,12 +1,12 @@
 ---
 name: skill-acceptance
-description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。支持单 skill 与库级批量验收。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.3.2
+description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
+version: 1.3.3
 author: 彬少
 platforms: [macos]
 metadata:
   hermes:
-    tags: [skill, 验收, quality, 编排, 批量]
+    tags: [skill, 验收, quality, 编排]
     category: skill-maintenance
 ---
 
@@ -94,6 +94,8 @@ metadata:
 
 **等使用者确认后才修**——对每轮新发现都生效，效率话术不构成例外（实测：跳过报告直接修，坑表加错位置 + 格式不符，全靠重走抓出）。
 
+**报告交付后登记台账**（单 skill 模式与批量模式同规）：按台账格式追加/更新该 skill 条目（status/issues/fixed/note/coverage=全流程），落 `~/workspace/skill-acceptance/<批量台账或本 skill 目录>/ledger.json`——不登记 = 下次批量验收会重复验（2026-09-07 实测：content-drafting 单独验收过，台账无记录）。
+
 ### Phase 5: 修复与重走（确认后执行）
 
 1. 按使用者指定范围修（全修/只修 X）
@@ -112,8 +114,14 @@ metadata:
 2. **排序策略**：按「使用频次 × 体量」降序——高频大文件风险敞口最大，先验。
 3. **并发执行**：delegate_task 主题批次并发，子代理只验收不修复（修复由主会话统一执行，保证口径一致）。遇 429 是上游过载波形：冷却 4 分钟后重发，收缩并发；同批全灭 = 冷失败特征。
 4. **交叉矛盾终审**：两个子代理报告结论相反时（本轮对 `--before` 机制一成一误），主会话必须亲自读源码终审，不投票不折中。
-5. **台账收口**：每个 skill 一条台账（status/issues/fixed/note），全量完成后统计一次通过率与修复率。
-6. **耗时预算**：单 skill 全流程耗时与体量正相关（41.7KB 走全流程约 20 分钟；5KB 级 2-3 分钟）——批量前按体量估算总时长，避免误判「跑不动」。
+5. **子代理报告的脚本断言同样复核**：子代理自称「脚本发现孤儿 X」时，先按被测 skill 正文 grep 该文件的实际语义角色再定性（本轮 memory-provider 报「evaluation.md 孤儿」，实为正文合并来源说明中的路径引用被正则漏匹配）——子代理的断言复核纪律与主会话一致，验收报告中的 ✗ 不是免检通行证。
+6. **台账收口**：每个 skill 一条台账（status/issues/fixed/note/**coverage**），全量完成后统计一次通过率与修复率。**coverage 字段记录覆盖深度，禁裸「已验收」**：`结构`（只跑了结构体检）或 `全流程`（结构+场景+路径模拟）——2026-09-07 实测：content-drafting 台账写「已验收 issues:0」，实际只查了断链/孤儿，路径层问题（归档目录不存在）放行；裸「已验收」会让使用者误以为查过没查的层
+7. **耗时预算**：单 skill 全流程耗时与体量正相关（41.7KB 走全流程约 20 分钟；5KB 级 2-3 分钟）——批量前按体量估算总时长，避免误判「跑不动」。
+
+
+## 修复环节常见坑
+
+⚠️ 验收修复（版本 bump / 双现场同步 / 元数据五件套）的高频坑见 [references/common-pitfalls.md](references/common-pitfalls.md)——执行 Phase 5 修复前必读：push ≠ 发布完成、版本号 replace 静默滑过、双现场互为基线。
 
 ## 报告落盘
 
@@ -148,6 +156,8 @@ metadata:
 | 8b | 文档/脚本一致性 | 文档说 JSON、脚本吃 HTML |
 | 8c | 触发词一致性 | frontmatter triggers vs 正文 |
 | 8d | 旧口径对账 | 架构改造后旧表述残留 |
+| 8e | 体量分层 | SKILL.md > ~15KB 且结构健康 → 病灶是「每次触发全文加载」，附则外迁 references（防双表漂移、外迁后重跑孤儿检测） |
+| 8f | 第三方仓库对象 | 体检对象是 canonical SKILL.md；分发适配器（hooks/INSTALL/多语言 README）不算膨胀，star 不是结构分数 |
 
 ## 附录 B：最小路径模拟流程（降级快照，权威=path-simulation 仓库）
 
