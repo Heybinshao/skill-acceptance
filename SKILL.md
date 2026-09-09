@@ -1,6 +1,6 @@
 ---
 name: skill-acceptance
-description: "【Skill 验收流水线】一句话验收一个 skill：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。支持单 skill 与库级批量验收。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
+description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。支持单 skill 与库级批量验收。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
 version: 1.2.0
 author: 彬少
 platforms: [macos]
