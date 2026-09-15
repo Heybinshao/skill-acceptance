@@ -17,7 +17,7 @@
 
 | 被引用 | 仓库 | 未安装时 |
 |---|---|---|
-| [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 十步体检清单 + 自动化脚本 | 内置附录 A 摘要（降级） |
+| [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 体检清单 + 自动化脚本 | 内置附录 A 摘要（降级） |
 | [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0-8 场景枚举+路径走查 | 内置附录 B 最小流程（降级） |
 
 - **装齐三个 = 全功能验收**
@@ -36,7 +36,7 @@
 ```
 Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 所有权（自己/第三方）
    ↓
-Phase 1 结构体检（skill-health-audit 十步清单 + 自动化脚本）
+Phase 1 结构体检（skill-health-audit 体检清单 + 自动化脚本）
    ↓
 Phase 2 场景枚举（path-simulation 步骤 0：五维矩阵）
    ↓
