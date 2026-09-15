@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.3.4-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.4.1-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
@@ -18,7 +18,7 @@
 | 被引用 | 仓库 | 未安装时 |
 |---|---|---|
 | [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 体检清单 + 自动化脚本 | 内置附录 A 摘要（降级） |
-| [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0-8 场景枚举+路径走查 | 内置附录 B 最小流程（降级） |
+| [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0 至末尾：场景枚举+路径走查 | 内置附录 B 最小流程（降级） |
 
 - **装齐三个 = 全功能验收**
 - 只装本 skill = 降级模式（内置摘要快照，权威以源仓库为准）
@@ -29,18 +29,18 @@
 
 > 「验收 XX skill」
 
-输出：覆盖声明 + 问题清单（阻断/一般/建议）+ 走查轨迹 + 误报记录。
+输出：范围声明（增量|全量）+ 覆盖声明 + 问题清单（阻断/一般/建议）+ 走查轨迹 + 误报记录；交付后登记台账（status/coverage/scope/issues/fixed/note）。
 
 ## 验收流程
 
 ```
-Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 所有权（自己/第三方）
+Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 范围（增量/全量——增量不豁免 8g/#7 必走项）+ 所有权（自己/第三方）
    ↓
-Phase 1 结构体检（skill-health-audit 体检清单 + 自动化脚本）
+Phase 1 结构体检（skill-health-audit 体检清单 + 自动化脚本，含 8g 全量判据对账）
    ↓
 Phase 2 场景枚举（path-simulation 步骤 0：五维矩阵）
    ↓
-Phase 3 路径模拟（path-simulation 步骤 1-8：标准/异常/跨文件）
+Phase 3 路径模拟（path-simulation 步骤 1 至末尾：标准/异常/跨文件 #7 判据配对）
    ↓
 Phase 4 统一报告 🔴 报告先于修复——等确认才动手
    ↓
