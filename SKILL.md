@@ -1,14 +1,15 @@
 ---
 name: skill-acceptance
 description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.3.3
-author: 彬少
+version: 1.3.4
 license: MIT
+author: 彬少
 platforms: [macos]
 metadata:
   hermes:
     tags: [skill, 验收, quality, 编排]
     category: skill-maintenance
+    related_skills: [skill-health-audit, path-simulation, skill-acceptance-report-schema, github-skill-publishing]
 ---
 
 # Skill 验收流水线
@@ -22,7 +23,7 @@ metadata:
 
 | 阶段 | 引用 | 管什么 |
 |---|---|---|
-| Phase 1 结构体检 | **skill-health-audit**（十步清单 + audit_skill_health.py） | 孤儿 references、断裂引用、重复章节、代码块配对、权威声称核实、文档脚本一致性、触发词一致性、旧口径对账 |
+| Phase 1 结构体检 | **skill-health-audit**（体检清单 + audit_skill_health.py） | 孤儿 references、断裂引用、重复章节、代码块配对、权威声称核实、文档脚本一致性、触发词一致性、旧口径对账 |
 | Phase 2 场景枚举 | **path-simulation 步骤 0** | 使用者场景矩阵（入口词/身份/输入形态/意图分支/产物去向），查整类用户未覆盖 |
 | Phase 3 路径模拟 | **path-simulation 步骤 1-8** | 3+ 条路径走查流程断链（标准/异常/跨文件必走），负例测试 + 回归用例 |
 | 汇总报告 | path-simulation 步骤 4 + report-template | 问题清单（阻断/一般/建议）→ 等使用者确认 → 修复后重走 |
@@ -33,7 +34,7 @@ metadata:
 
 | 被引用 | 仓库 | 引用内容 | 未安装时 |
 |---|---|---|---|
-| skill-health-audit | github.com/Heybinshao/skill-health-audit | 十步体检清单 + audit_skill_health.py | 按附录 A 摘要执行（降级） |
+| skill-health-audit | github.com/Heybinshao/skill-health-audit | 体检清单 + audit_skill_health.py | 按附录 A 摘要执行（降级） |
 | path-simulation | github.com/Heybinshao/path-simulation | 步骤 0-8 + 场景矩阵 + 报告模板 | 按附录 B 最小流程执行（降级） |
 
 **附录是降级快照，权威以源仓库为准**——源更新后附录可能滞后。装齐两个源 = 全功能验收。
@@ -51,10 +52,10 @@ metadata:
 
 ### Phase 1: 结构体检（按 skill-health-audit 执行）
 
-> 源仓库：github.com/Heybinshao/skill-health-audit（十步清单以此为准）。未安装该 skill 时，按附录 A 的十步摘要执行降级体检。
+> 源仓库：github.com/Heybinshao/skill-health-audit（体检清单步骤号以此为准，本文件不复制方法论）。未安装该 skill 时，按附录 A 的摘要执行降级体检。
 
 1. `python3 <health-audit 目录>/scripts/audit_skill_health.py <skill_dir>` 跑自动化三项（孤儿/重复标题/代码块配对）
-2. 人工跑十步清单中脚本不覆盖的：权威声称核实（第 7 步）、兜底前向引用（第 8 步）、文档脚本一致性（第 8b 步）、触发词一致性（第 8c 步）、旧口径对账（第 8d 步）、体量分层（第 8e 步）
+2. 人工跑清单中脚本不覆盖的：同名副本遮蔽（第 2b 步）、权威声称核实（第 7 步）、兜底前向引用（第 8 步）、文档脚本一致性（第 8b 步）、触发词一致性（第 8c 步）、旧口径对账（第 8d 步）、体量分层（第 8e 步）、第三方仓库对象判定（第 8f 步）
 3. **自动化初报不当结论**：孤儿/断链报告先人工复核（正则盲区：汇总行格式、内联引用），误报剔除后再定性
 4. 结构问题记录为问题清单第一段（标注「结构」类）
 
@@ -95,7 +96,7 @@ metadata:
 
 **等使用者确认后才修**——对每轮新发现都生效，效率话术不构成例外（实测：跳过报告直接修，坑表加错位置 + 格式不符，全靠重走抓出）。
 
-**报告交付后登记台账**（单 skill 模式与批量模式同规）：按台账格式追加/更新该 skill 条目（status/issues/fixed/note/coverage=全流程），落 `~/workspace/skill-acceptance/<批量台账或本 skill 目录>/ledger.json`——不登记 = 下次批量验收会重复验（2026-09-07 实测：content-drafting 单独验收过，台账无记录）。
+**报告交付后登记台账**（单 skill 模式与批量模式同规）：按台账格式追加/更新该 skill 条目（status/issues/fixed/note/coverage=全流程，字段结构见姊妹 skill `skill-acceptance-report-schema`），落 `~/workspace/skill-acceptance/<批量台账或本 skill 目录>/ledger.json`——不登记 = 下次批量验收会重复验（2026-09-07 实测：content-drafting 单独验收过，台账无记录）。
 
 ### Phase 5: 修复与重走（确认后执行）
 
@@ -132,7 +133,7 @@ metadata:
 
 | 陷阱 | 防法 |
 |---|---|
-| 把 health-audit 的十步抄进本 skill（副本漂移） | 只引用步骤号，方法论更新自动跟随 |
+| 把 health-audit 的清单抄进本 skill（副本漂移） | 只引用步骤号，方法论更新自动跟随；步骤总数等硬数字也别写——源加一步（十步→十一步）本文件就成了现行犯（2026-09-15 实测） |
 | 自动化初报直接当结论 | 正则盲区（汇总行/内联引用）人工复核后才定性 |
 | 断言报 ✗ 直接当被测对象的问题 | 先三查断言（编码/前提/失败归因），模拟器也会错——坑表见 path-simulation 的 common-pitfalls |
 | 跳过报告直接修 | 🔴 报告先于修复，每轮新发现都生效 |
@@ -142,12 +143,13 @@ metadata:
 
 ---
 
-## 附录 A：十步体检摘要（降级快照，权威=skill-health-audit 仓库）
+## 附录 A：体检摘要（降级快照，权威=skill-health-audit 仓库）
 
 | # | 检查项 | 查什么 |
 |---|---|---|
 | 1 | 通读 SKILL.md + references | 中文 UTF-8 误判 Binary → python 读 |
 | 2 ⭐ | 引用完整性 | 孤儿（有文件没链接）/ 断裂（有链接没文件）；自动化：health-audit 的 audit_skill_health.py |
+| 2b | 同名副本遮蔽 | 同 `name` 两份 → 被 CLI 去重遮蔽的那份永不加载（`grep -l '^name: X$' 全库` 查重复） |
 | 3 | 错位文件 | 内容属于别的 skill |
 | 4 | 重复章节 | 迭代粘贴残留（完整版+半成品并存） |
 | 5 | 代码块配对 | 未闭合栅栏污染后续渲染 |
