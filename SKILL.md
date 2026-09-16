@@ -1,7 +1,7 @@
 ---
 name: skill-acceptance
 description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.4.1
+version: 1.5.1
 license: MIT
 author: 彬少
 platforms: [macos]
@@ -35,9 +35,9 @@ metadata:
 | 被引用 | 仓库 | 引用内容 | 未安装时 |
 |---|---|---|---|
 | skill-health-audit | github.com/Heybinshao/skill-health-audit | 体检清单 + audit_skill_health.py | 按附录 A 摘要执行（降级） |
-| path-simulation | github.com/Heybinshao/path-simulation | 步骤 0-8 + 场景矩阵 + 报告模板 | 按附录 B 最小流程执行（降级） |
+| path-simulation | github.com/Heybinshao/path-simulation | 步骤 0 至末尾 + 场景矩阵 + 报告模板 | 按附录 B 最小流程执行（降级） |
 
-**附录是降级快照，权威以源仓库为准**——源更新后附录可能滞后。装齐两个源 = 全功能验收。
+**附录是降级快照，权威以源仓库为准**——⚠️ **本机装齐对应源 skill 时禁止照附录执行（读源不读附录，附录滞后是设计预期非 bug），仅未装源时降级启用**；给第三方发布时随版本 bump 刷新一次。装齐两个源 = 全功能验收。
 
 ---
 
@@ -47,7 +47,7 @@ metadata:
 
 1. 确认被测 skill 的 `skill_dir`（本地路径）
 2. 确认类型：流程类（用户会走一串步骤）→ 全流程；纯知识类 → 只做 Phase 1，Phase 2-3 跳过并注明理由
-3. **确认 scope（验收范围分级）**：`增量`（审本轮变更，默认：日常修复轮、小版本）或 `全量`（审整个 skill，触发条件任一：大版本/架构改造后、references ≥5 个、修复引入「新口径替代旧口径」、使用者明说「全面/深度检查」——较源 8g 档位从严）。🔴 **范围分级只豁免「对变更集的验证深度」，不豁免必走项**：Phase 1 的 8g 全量判据对账与 Phase 3 的 #7 跨文件路径在全目录含多参考文件时增量轮也必走（对象可缩为「本轮新口径 vs 全目录存量判据」配对，与源 8g 触发档位第 4 条同源口径）；确要跳过（仅限单文件对象），报告「覆盖」行显式标注「8g/#7 未跑」，禁止裸「已验收」——2026-09-16 实证：mfm 第四轮增量验收全绿，同日全量深读抓 3 处跨文件判据打架
+3. **确认 scope（验收范围分级）**：`增量`（审本轮变更，默认：日常修复轮、小版本）或 `全量`（审整个 skill）。**两档判据的权威 = health-audit 8g「触发档位」**（全量触发条件、必走项缩减口径、跳过标注规则都以该节为准，本处不复制判据全文）；编排器差异只有一条——**编排场景较源从严**：全量触发在 8g 三项之外加「references ≥5 个、使用者明说全面/深度」两信号，必走项（8g/#7）含多参考文件时增量轮也不豁免，确要跳过（单文件对象）报告「覆盖」行显式标注，禁止裸「已验收」（2026-09-16 实证：mfm 第四轮增量验收全绿，同日全量深读抓 3 处跨文件判据打架）
 4. 确认所有权：自己的 skill → 修复可执行；第三方/官方 → 只报告不修改
 5. 读被测 skill 的 frontmatter（name/version/triggers），记下基线
 
@@ -91,13 +91,14 @@ metadata:
 | # | 类别(结构/覆盖/流程) | 问题 | 严重度 | 建议修复 |
 ### 走查轨迹（每条路径一行，含无问题路径）
 ### 误报记录（模拟器断言错误，供坑表回写参考）
+### 体量账：SKILL.md <N> 字符（python len，字符口径）｜上轮 <M>｜Δ<X%>（>20,000 或单轮净增 >15% → 黄灯，注明建议下轮先做「一条进必查一条出」收缩）
 
 共发现 N 个问题。是否修复？
 ```
 
 **等使用者确认后才修**——对每轮新发现都生效，效率话术不构成例外（实测：跳过报告直接修，坑表加错位置 + 格式不符，全靠重走抓出）。
 
-**报告交付后登记台账**（单 skill 模式与批量模式同规）：按台账格式追加/更新该 skill 条目（status / issues / fixed / note / **scope** / **coverage**——coverage 按实际深度填「结构」或「全流程」，字段结构见姊妹 skill `skill-acceptance-report-schema`），落 `~/workspace/skill-acceptance/ledger.json`（单 skill 模式一律顶层这份；批量模式落批次目录 `batch-*/ledger.json`，如 batch-20260910-plan-scope/）——不登记 = 下次批量验收会重复验（2026-09-07 实测：content-drafting 单独验收过，台账无记录）。
+**报告交付后登记台账**（单 skill 模式与批量模式同规）：按台账格式追加/更新该 skill 条目（status / issues / fixed / note / **scope** / **coverage**——coverage 按实际深度填「结构」或「全流程」 / **size**——被测 SKILL.md 字符数，python len 口径勿用字节，字段结构见姊妹 skill `skill-acceptance-report-schema`），落 `~/workspace/skill-acceptance/ledger.json`（单 skill 模式一律顶层这份；批量模式落批次目录 `batch-*/ledger.json`，如 batch-20260910-plan-scope/）——不登记 = 下次批量验收会重复验（2026-09-07 实测：content-drafting 单独验收过，台账无记录）。
 
 ### Phase 5: 修复与重走（确认后执行）
 
