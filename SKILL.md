@@ -1,7 +1,7 @@
 ---
 name: skill-acceptance
 description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.5.2
+version: 1.5.3
 license: MIT
 author: 彬少
 platforms: [macos]
@@ -81,20 +81,7 @@ metadata:
 
 ### Phase 4: 统一报告（🔴 报告先于修复）
 
-按 path-simulation 步骤 4 输出，结构：
-
-```
-## Skill 验收报告：<name> v<version>
-
-### 覆盖：范围（增量|全量；跳过的必走项显式标注）｜结构体检（X 项）｜场景矩阵（Y 行）｜路径模拟（Z 条）
-### 问题清单
-| # | 类别(结构/覆盖/流程) | 问题 | 严重度 | 建议修复 |
-### 走查轨迹（每条路径一行，含无问题路径）
-### 误报记录（模拟器断言错误，供坑表回写参考）
-### 体量账：SKILL.md <N> 字符（python len，字符口径）｜上轮 <M>｜Δ<X%>（>20,000 或单轮净增 >15% → 黄灯，注明建议下轮先做「一条进必查一条出」收缩）
-
-共发现 N 个问题。是否修复？
-```
+按 path-simulation 步骤 4 输出。**报告结构模板 = 姊妹 skill `skill-acceptance-report-schema`「报告结构」节的权威定义（双层四区：覆盖+体量账 → 问题清单+是否修复 → 证据区表格 → 总评；本文件不复制模板，防双份漂移）**。要点：问题清单按严重度排序、编号供点菜、散文只在总评与收口行、未跑的 Phase 写「跳过（理由）」。
 
 **等使用者确认后才修**——对每轮新发现都生效，效率话术不构成例外（实测：跳过报告直接修，坑表加错位置 + 格式不符，全靠重走抓出）。
 
