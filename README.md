@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.5.3-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.5.4-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
@@ -34,7 +34,7 @@
 ## 验收流程
 
 ```
-Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 范围（增量/全量——增量不豁免 8g/#7 必走项）+ 所有权（自己/第三方）
+Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 范围（增量/全量——增量不豁免 8g/#7 必走项）+ 所有权（自己/第三方）+ 深度档位（日常=增量不配靶区 ≤10min；手术/发布前=全量+靶区）
    ↓
 Phase 1 结构体检（skill-health-audit 体检清单 + 自动化脚本，含 8g 全量判据对账）
    ↓
