@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.2-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.3-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
@@ -17,8 +17,8 @@
 
 | 被引用 | 仓库 | 未安装时 |
 |---|---|---|
-| [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 体检清单 + 自动化脚本 | 内置附录 A 摘要（降级） |
-| [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0 至末尾：场景枚举+路径走查 | 内置附录 B 最小流程（降级） |
+| [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 体检清单 + 自动化脚本 | 降级快照收录在本仓 references/degraded-snapshots.md（附录 A） |
+| [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0 至末尾：场景枚举+路径走查 | 降级快照收录在本仓 references/degraded-snapshots.md（附录 B） |
 
 - **装齐三个 = 全功能验收**
 - 只装本 skill = 降级模式（内置摘要快照，权威以源仓库为准）
@@ -68,8 +68,9 @@ Phase 5 修复 + 负例/回归重走
 
 ```
 skill-acceptance/
-├── SKILL.md                      # 编排流程（Phase 0-5）+ 附录 A/B（降级快照）
-├── references/common-pitfalls.md # 坑表（实测翻车 + 防法）
+├── SKILL.md                              # 编排流程（Phase 0-5）+ 批量模式 + 陷阱表
+├── references/common-pitfalls.md         # 坑表（实测翻车 + 防法）
+├── references/degraded-snapshots.md      # 附录 A/B 降级快照（未装被引用 skill 时才读）
 └── LICENSE
 ```
 
