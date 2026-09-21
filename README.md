@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.1-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.2-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
@@ -36,13 +36,13 @@
 ```
 Phase 0 定界：被测 skill 路径 + 类型（流程类/知识类）+ 范围（增量/全量——增量不豁免 8g/#7 必走项）+ 所有权（自己/第三方）+ 深度档位（日常=增量不配靶区 ≤10min；手术/发布前=全量+靶区）
    ↓
-Phase 1 结构体检（skill-health-audit 体检清单 + 自动化脚本，含 8g 全量判据对账）
+Phase 1 结构体检（开场跑 preflight_check.py 一次拿齐机械证据 → 人工定性；按 skill-health-audit 清单，含 8g 全量判据对账）
    ↓
 Phase 2 场景枚举（path-simulation 步骤 0：五维矩阵）
    ↓
 Phase 3 路径模拟（path-simulation 步骤 1 至末尾：标准/异常/跨文件 #7 判据配对）
    ↓
-Phase 4 统一报告 🔴 报告先于修复——等确认才动手
+Phase 4 统一报告 🔴 报告先于修复——等确认才动手（报告按 MEDIA 交付文件卡片；聊天正文只给精编三件：问题清单表 / 覆盖账 / 待拍板表）
    ↓
 Phase 5 修复 + 负例/回归重走
 ```
@@ -68,7 +68,8 @@ Phase 5 修复 + 负例/回归重走
 
 ```
 skill-acceptance/
-├── SKILL.md      # 编排流程（Phase 0-5）+ 附录 A/B（降级快照）
+├── SKILL.md                      # 编排流程（Phase 0-5）+ 附录 A/B（降级快照）
+├── references/common-pitfalls.md # 坑表（实测翻车 + 防法）
 └── LICENSE
 ```
 
