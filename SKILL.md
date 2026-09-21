@@ -1,7 +1,7 @@
 ---
 name: skill-acceptance
-description: "【Skill 验收流水线】一句话验收一个 skill 或开发方案（plan）：结构体检→场景枚举→路径模拟→汇总报告。触发词：验收skill、验收方案、验收XX、skill验收、全面检查XX skill。编排 skill-health-audit（结构）与 path-simulation（流程）两条方法论，产出统一验收报告。发布前验收由用户自行调用 github-skill-publishing。依赖：推荐同时安装 skill-health-audit 与 path-simulation（未装时按内置附录降级模式执行）。"
-version: 1.5.4
+description: "【Skill 验收】验收skill、验收方案。结构→场景→路径→报告"
+version: 1.5.7
 license: MIT
 author: 彬少
 platforms: [macos]
@@ -56,8 +56,8 @@ metadata:
 
 > 源仓库：github.com/Heybinshao/skill-health-audit（体检清单步骤号以此为准，本文件不复制方法论）。未安装该 skill 时，按附录 A 的摘要执行降级体检。
 
-1. `python3 <health-audit 目录>/scripts/audit_skill_health.py <skill_dir>` 跑自动化三项（孤儿/重复标题/代码块配对）
-2. 人工跑清单中脚本不覆盖的：同名副本遮蔽（第 2b 步）、权威声称核实（第 7 步）、兜底前向引用（第 8 步）、文档脚本一致性（第 8b 步）、触发词一致性（第 8c 步）、旧口径对账（第 8d 步）、体量分层（第 8e 步）、第三方仓库对象判定（第 8f 步）、全量判据对账（第 8g 步，scope 按 Phase 0 定界执行）
+1. 定位体检脚本（health-audit 装在 `binshao/agent/ops/` 等分类深层路径，find 不限深度一次命中——2026-09-22 验收实证：限 maxdepth 会扫不到导致误判「脚本不存在」降级裸跑人工清单）：`HA=$(find ~/.hermes/skills -name audit_skill_health.py | head -1)`，再 `python3 "$HA" <skill_dir>` 跑自动化三项（孤儿/重复标题/代码块配对）
+2. 人工跑清单中脚本不覆盖的：同名副本遮蔽（第 2b 步）、散文指路语检测（第 2c 步，外迁/重组后必做，降级快照附录 A 本有此行——装齐源 skill 反而别漏）、权威声称核实（第 7 步）、兜底前向引用（第 8 步）、文档脚本一致性（第 8b 步）、触发词一致性（第 8c 步）、旧口径对账（第 8d 步）、体量分层（第 8e 步）、第三方仓库对象判定（第 8f 步）、全量判据对账（第 8g 步，scope 按 Phase 0 定界执行）
 3. **自动化初报不当结论**：孤儿/断链报告先人工复核（正则盲区：汇总行格式、内联引用），误报剔除后再定性
 4. 结构问题记录为问题清单第一段（标注「结构」类）
 
@@ -141,6 +141,7 @@ metadata:
 | 1 | 通读 SKILL.md + references | 中文 UTF-8 误判 Binary → python 读 |
 | 2 ⭐ | 引用完整性 | 孤儿（有文件没链接）/ 断裂（有链接没文件）；自动化：health-audit 的 audit_skill_health.py |
 | 2b | 同名副本遮蔽 | 同 `name` 两份 → 被 CLI 去重遮蔽的那份永不加载（`grep -l '^name: X$' 全库` 查重复） |
+| 2c | 散文指路语 | 外迁后「见第 X 节 / 见步骤 N」是否断头；细节以源 2c 节为准，本行是降级摘要 |
 | 3 | 错位文件 | 内容属于别的 skill |
 | 4 | 重复章节 | 迭代粘贴残留（完整版+半成品并存） |
 | 5 | 代码块配对 | 未闭合栅栏污染后续渲染 |

@@ -8,7 +8,7 @@
 
 验收修复常伴随版本 bump（frontmatter version / README 徽章），但执行者容易只 push SKILL.md 就收工——tag、release、About description、README 徽章全部留在旧版本。实测：2026-09-10 验收三 skill（path-simulation / skill-health-audit / skill-acceptance）修复后仅推代码，release/About/徽章全漏，被用户一句「release about 版本号这些你就不改了是吧」抓包。
 
-**防法**：修复涉及版本变更时，收尾必跑 github-skill-publishing 的「发布后元数据同步」五项——tag（打在最后 commit）/ release / About / README 徽章 / SKILL frontmatter version，逐项 API 终检，不能只看 push exit code。
+**防法**：修复涉及版本变更时，收尾必跑 github-skill-publishing 的 `scripts/publish_verify.sh` 五项终检（tag / Release Latest / About / README 徽章 / 本地远程一致性——清单以该脚本为唯一权威，本处不另列），exit 0 才算过，不能只看 push exit code。
 
 ### 版本号类 patch 必须 grep 落点值验证
 
