@@ -1,4 +1,4 @@
-# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.5-blue)
+# ✅ Skill 验收流水线（skill-acceptance） ![版本](https://img.shields.io/badge/版本-v1.6.6-blue)
 
 > 一句话验收一个 AI skill：场景枚举查入口覆盖 → 路径模拟查流程断链 → 统一验收报告。
 
@@ -19,9 +19,21 @@
 |---|---|---|
 | [skill-health-audit](https://github.com/Heybinshao/skill-health-audit) | 体检清单 + 自动化脚本 | 降级快照收录在本仓 references/degraded-snapshots.md（附录 A） |
 | [path-simulation](https://github.com/Heybinshao/path-simulation) | 步骤 0 至末尾：场景枚举+路径走查 | 降级快照收录在本仓 references/degraded-snapshots.md（附录 B） |
+| [skill-acceptance-report-schema](https://github.com/Heybinshao/skill-acceptance-report-schema) | 报告双层四区结构 + 台账七字段 + 严重度语义 | 本仓 Phase 4 自带要点，版式从简（证据区表可省） |
 
-- **装齐三个 = 全功能验收**
+- **装齐四个 = 全功能验收**
 - 只装本 skill = 降级模式（内置摘要快照，权威以源仓库为准）
+
+**四件套全景**：本 skill 是**唯一入口与编排器**（定界 → 结构体检 → 场景枚举 → 路径模拟 → 报告与台账），另外三个各管一段、彼此不重复：
+
+```
+skill-acceptance（本仓，编排）
+  ├─ Phase 1 → skill-health-audit              结构体检清单 + 4 脚本
+  ├─ Phase 2/3 → path-simulation               场景枚举 + 路径走查
+  └─ Phase 4 → skill-acceptance-report-schema  报告版式 + 台账字段
+```
+
+**引用方式是「引用步骤号」而非复制内容**——被引用方加一步、改判据，编排器自动跟随，不会产生副本漂移。另三个仓的 README 都有「与姊妹 skill 的关系」一节，各自写自己视角。
 
 ## 怎么用
 

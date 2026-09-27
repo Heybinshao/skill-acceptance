@@ -1,7 +1,7 @@
 ---
 name: skill-acceptance
 description: "【Skill 验收】验收skill、验收方案、批量验收。结构→场景→路径→报告"
-version: 1.6.5
+version: 1.6.6
 license: MIT
 author: 彬少
 platforms: [macos]
